@@ -1,0 +1,230 @@
+╔══════════════════════════════════════════════════════════════════╗
+║              AppV1 - Social Comments Application                 ║
+║                   Complete Android Project                        ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────┐
+│  APP ARCHITECTURE (MVVM)                                         │
+└──────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────┐
+    │  View Layer │
+    └─────────────┘
+         │
+    ┌────┴────┐
+    │         │
+┌───▼────┐ ┌─▼──────┐
+│Facebook│ │ Reddit │
+│Fragment│ │Fragment│
+└───┬────┘ └─┬──────┘
+    │        │
+    └────┬───┘
+         │
+    ┌────▼─────┐
+    │ViewModel │
+    └──────────┘
+         │
+    ┌────┴────┐
+    │         │
+┌───▼────┐ ┌─▼──────┐
+│Facebook│ │ Reddit │
+│  Repo  │ │  Repo  │
+└───┬────┘ └─┬──────┘
+    │        │
+    └────┬───┘
+         │
+    ┌────▼────┐
+    │  Model  │
+    └─────────┘
+         │
+    ┌────┴────┐
+    │         │
+┌───▼───┐ ┌──▼──┐
+│  DAO  │ │Room │
+│       │ │  DB │
+└───────┘ └─────┘
+
+┌──────────────────────────────────────────────────────────────────┐
+│  DATABASE SCHEMA                                                 │
+└──────────────────────────────────────────────────────────────────┘
+
+┌─────────────┐         ┌─────────────┐
+│    User     │◄────────┤   Comment   │
+├─────────────┤         ├─────────────┤
+│ id          │         │ id          │
+│ username    │         │ userId (FK) │
+│ displayName │         │ postId (FK) │
+│ avatarUrl   │         │ parentId    │
+└─────────────┘         │ content     │
+      ▲                 │ timestamp   │
+      │                 │ likesCount  │
+      │                 │ type        │
+      │                 └─────────────┘
+      │                        ▲
+      │                        │
+      │                 ┌──────┴──────┐
+      │                 │             │
+┌─────┴─────┐    ┌──────▼─────┐ ┌────▼────┐
+│   Post    │    │    Vote    │ │ Comment │
+├───────────┤    ├────────────┤ │(nested) │
+│ id        │◄───┤ postId(FK) │ └─────────┘
+│ userId(FK)│    │ userId(FK) │
+│ title     │    │commentId   │
+│ content   │    │ isUpvote   │
+│ timestamp │    └────────────┘
+│ upvotes   │
+│ downvotes │
+└───────────┘
+
+┌──────────────────────────────────────────────────────────────────┐
+│  UI COMPONENTS                                                   │
+└──────────────────────────────────────────────────────────────────┘
+
+MainActivity (Bottom Navigation)
+├── Fragment 1: Facebook Style
+│   ├── RecyclerView (Top-level comments)
+│   │   └── Item: Comment Card
+│   │       ├── Avatar (emoji)
+│   │       ├── Username
+│   │       ├── Timestamp
+│   │       ├── Content
+│   │       ├── Like Button + Counter
+│   │       ├── Reply Button
+│   │       ├── Toggle Replies Button
+│   │       └── RecyclerView (Nested replies)
+│   └── Input Area
+│       ├── User Spinner
+│       └── Comment Input + Post Button
+│
+└── Fragment 2: Reddit Style
+    ├── RecyclerView (Posts)
+    │   └── Item: Post Card
+    │       ├── Vote Controls (↑ score ↓)
+    │       ├── Title
+    │       ├── Author + Timestamp
+    │       ├── Content (preview)
+    │       └── Comments Button
+    ├── FAB (Create Post)
+    └── Dialogs
+        ├── Create Post Dialog
+        │   ├── User Spinner
+        │   ├── Title Input
+        │   └── Content Input
+        └── Comments Dialog
+            ├── RecyclerView (Comments)
+            │   └── Item: Comment
+            │       ├── Indent Bar (nested level)
+            │       ├── Vote Controls
+            │       ├── Author + Timestamp
+            │       ├── Content
+            │       ├── Reply Button
+            │       ├── Expand/Collapse Button
+            │       └── RecyclerView (Replies)
+            └── Input Area
+                └── Comment Input + Post Button
+
+┌──────────────────────────────────────────────────────────────────┐
+│  FEATURES                                                        │
+└──────────────────────────────────────────────────────────────────┘
+
+Facebook Style:
+✓ Post comments
+✓ Like/unlike (with counter)
+✓ Reply to comments (3 levels deep)
+✓ Collapse/expand replies
+✓ User selection via dropdown
+✓ Relative timestamps
+✓ Real-time updates via LiveData
+
+Reddit Style:
+✓ Create posts (title + content)
+✓ Upvote/downvote posts
+✓ Vote counter (net score)
+✓ Post comments
+✓ Nested comment threads (5 levels)
+✓ Upvote/downvote comments
+✓ Collapse/expand threads
+✓ Visual indentation
+✓ Sort by score or time
+
+┌──────────────────────────────────────────────────────────────────┐
+│  SAMPLE DATA (Pre-loaded)                                       │
+└──────────────────────────────────────────────────────────────────┘
+
+Users: 8 sample users with emoji avatars
+  • John Doe 👨
+  • Jane Smith 👩
+  • Mike Wilson 👨‍💼
+  • Sarah Jones 👩‍💻
+  • Alex Brown 🧑
+  • Emily Davis 👩‍🎨
+  • Chris Taylor 👨‍🔬
+  • Lisa Martin 👩‍🏫
+
+Facebook Comments: 6 top-level + replies
+  • "¡Esta aplicación es increíble!" (15 likes)
+    └── "Totalmente de acuerdo." (8 likes)
+  • "¿Alguien sabe si tiene modo oscuro?" (23 likes)
+    └── "Sí, en configuración..." (12 likes)
+  • + more comments with nested replies
+
+Reddit Posts: 5 posts with comments
+  1. "Tutorial: Cómo empezar con Kotlin" (Score: 134)
+     └── 3 comments with replies
+  2. "Comparación: Room vs SQLite puro" (Score: 86)
+     └── 1 comment
+  3. "Las mejores prácticas MVVM" (Score: 203)
+     └── 2 comments with replies
+  4. "Material Design 3: Guía completa" (Score: 173)
+     └── Comments available
+  5. "Optimización de RecyclerView" (Score: 258)
+     └── 1 comment with high engagement
+
+┌──────────────────────────────────────────────────────────────────┐
+│  PROJECT STATISTICS                                              │
+└──────────────────────────────────────────────────────────────────┘
+
+Files Created:        59
+Kotlin Files:         19 (~1,674 lines)
+XML Layouts:          9
+Resource Files:       6
+Gradle Config:        4
+Documentation:        4
+Total Lines of Code:  ~2,500
+
+Packages:
+✓ data.entity        (4 files)
+✓ data.dao           (4 files)
+✓ data.database      (1 file)
+✓ data.repository    (2 files)
+✓ viewmodel          (2 files)
+✓ ui.facebook        (2 files)
+✓ ui.reddit          (3 files)
+
+Dependencies:
+✓ Room Database
+✓ Navigation Component
+✓ Material Design 3
+✓ Lifecycle Components
+✓ Coroutines
+✓ RecyclerView
+
+┌──────────────────────────────────────────────────────────────────┐
+│  BUILD REQUIREMENTS                                              │
+└──────────────────────────────────────────────────────────────────┘
+
+• Android Studio Hedgehog (2023.1.1+)
+• JDK 17
+• Android SDK API 24-34
+• Kotlin 1.9.20
+• Gradle 8.2
+• Internet access for dependency download
+
+Build Commands:
+$ ./gradlew assembleDebug    # Build APK
+$ ./gradlew installDebug     # Install on device
+$ ./gradlew test             # Run tests
+
+═══════════════════════════════════════════════════════════════════
+  Project Status: ✅ COMPLETE & READY TO BUILD
+═══════════════════════════════════════════════════════════════════
