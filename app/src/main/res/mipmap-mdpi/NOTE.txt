@@ -1,0 +1,2 @@
+This directory should contain ic_launcher.png and ic_launcher_round.png
+For this demo, the app uses adaptive icons defined in mipmap-anydpi-v26

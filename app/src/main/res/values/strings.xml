@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Social Comments App</string>
+    
+    <!-- Navigation -->
+    <string name="nav_facebook">Facebook Style</string>
+    <string name="nav_reddit">Reddit Style</string>
+    
+    <!-- Facebook Fragment -->
+    <string name="facebook_title">Comentarios estilo Facebook</string>
+    <string name="comment_hint">Escribe un comentario…</string>
+    <string name="post_comment">Publicar</string>
+    <string name="reply_hint">Escribe una respuesta…</string>
+    <string name="reply">Responder</string>
+    <string name="like">Me gusta</string>
+    <string name="likes_count">%d Me gusta</string>
+    <string name="show_replies">Ver %d respuestas</string>
+    <string name="hide_replies">Ocultar respuestas</string>
+    
+    <!-- Reddit Fragment -->
+    <string name="reddit_title">Posts estilo Reddit</string>
+    <string name="post_title_hint">Título del post</string>
+    <string name="post_content_hint">Contenido del post (opcional)</string>
+    <string name="create_post">Crear Post</string>
+    <string name="upvote">Upvote</string>
+    <string name="downvote">Downvote</string>
+    <string name="comments">%d comentarios</string>
+    <string name="comment">Comentar</string>
+    <string name="sort_by_score">Ordenar por puntuación</string>
+    <string name="sort_by_time">Ordenar por tiempo</string>
+    <string name="posted_by">Por %s</string>
+    <string name="score">%d puntos</string>
+    <string name="expand_thread">Expandir</string>
+    <string name="collapse_thread">Colapsar</string>
+    <string name="time_ago">hace %s</string>
+    
+    <!-- Common -->
+    <string name="cancel">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="select_user">Seleccionar usuario</string>
+</resources>
